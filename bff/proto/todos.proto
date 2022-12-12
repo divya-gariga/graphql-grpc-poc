@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+
+service TodoList{
+  rpc viewTodos(Empty) returns(stream Todo);
+  rpc editTodo(Todo) returns(APIResponse);
+  rpc addTodo(Todo) returns (APIResponse);
+  rpc deleteTodo(Todo) returns (APIResponse);
+}
+message Todo{
+  string task_id = 1;
+  string title = 2;
+  string edit_title = 3; //optional
+  bool completed = 4;
+}
+
+
+message APIResponse{
+  string response_message = 1;
+  int32 response_code = 2;
+}
+message Empty{}
+
+message ErrorResponse {
+  string title = 1;
+  int32 response_code = 2;
+}
