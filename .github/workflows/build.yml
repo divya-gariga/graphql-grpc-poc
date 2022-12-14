@@ -38,9 +38,9 @@ jobs:
          cd target 
          ls
       - name: build grpc-server
-        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/grpc-server:latest
+        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-grpc-server:latest
       - name: docker push grpc-server
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/grpc-server:latest
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-grpc-server:latest
         
   build_graphql:
     needs: build
@@ -60,9 +60,9 @@ jobs:
          username: ${{ secrets.REGISTRY_USERNAME }}
          password: ${{ secrets.REGISTRY_TOKEN }}
       - name: build graphql-client 
-        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/graphql-client:latest
+        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-graphql-client:latest
       - name: docker graphql-client 
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/graphql-client:latest
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-graphql-client:latest
  
   build_frontend:
     needs: build
@@ -84,7 +84,6 @@ jobs:
       - name: docker build frontend
         run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-fe:latest 
       - name: docker push frontend
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-fe:latest
-
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-fe:latest 
   
       
