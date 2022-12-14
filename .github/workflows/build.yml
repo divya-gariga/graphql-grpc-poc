@@ -37,10 +37,13 @@ jobs:
         run: |
          cd target 
          ls
+         docker images
       - name: build grpc-server
-        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-grpc-server:latest
+        run: | 
+        docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-grpc-server
+        docker images
       - name: docker push grpc-server
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-grpc-server:latest
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/todo-grpc-server
         
   build_graphql:
     needs: build
