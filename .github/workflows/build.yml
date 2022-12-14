@@ -1,0 +1,88 @@
+name:  graphql-grpc-poc CI/CD
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v2
+      # - name: docker login to github container registry
+      #   uses: docker/login-action/@v2
+      #   with:
+      #    registry: ${{ secrets.REGISTRY }}
+      #    username: ${{ secrets.REGISTRY_USERNAME }}
+      #    password: ${{ secrets.REGISTRY_TOKEN }}
+      # - name: maven install
+      #   working-directory: ./backend
+      #   run: mvn clean install -DskipTests
+
+  build_grpc:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: todo-server/
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v2
+      - name: install dependencies and run test cases
+        run: mvn clean install
+      # - name: build mysql
+      #   run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
+      # - name: docker push mysql
+      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
+        
+  build_graphql:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bff/
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v2
+      - name: install dependencies
+        run: npm install 
+      
+      #   run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
+      # - name: docker push backend
+      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
+ 
+  # build_frontend:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #    - name: build frontend
+  #      working-directory: ./frontend
+  #      run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest 
+  #    - name: docker push frontend
+  #      run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
+
+  # deploy:
+    # needs: build
+    # runs-on: ubuntu-latest
+    # steps:
+    #  - name: create .ssh dir
+    #    run: mkdir  ~/.ssh
+    #  - name: disable the strict host key checking
+    #    run:  echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config    
+    #  - name: copy key inside the ssh
+    #    run:  echo -e "${{ secrets.EC2_SSH_KEY}}" > ~/.ssh/id_rsa  
+    #  - name: setting file permissions
+    #    run:  chmod 600 ~/.ssh/id_rsa
+     
+    #  - name: run db container
+    #    run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker ps -aq | xargs docker stop | xargs docker rm && docker rmi ghcr.io/divya-gariga/bootcamp-26-db:latest && docker run -d -p 3306:3306 ghcr.io/divya-gariga/bootcamp-26-db:latest"
+    #  - name: run backend container
+    #    run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker ps -aq | xargs docker stop | xargs docker rm && docker rmi ghcr.io/divya-gariga/bootcamp-26-backend:latest && docker run -d -p 8090:8090 ghcr.io/divya-gariga/bootcamp-26-backend:latest"
+    #  - name: run frontend container
+    #    run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} "docker ps -aq | xargs docker stop | xargs docker rm && docker rmi ghcr.io/divya-gariga/bootcamp-26-frontend:latest && docker run -d -p 3000:3000 ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
+
+
+     
+    
+   
+      

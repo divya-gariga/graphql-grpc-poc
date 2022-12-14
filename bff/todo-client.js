@@ -5,7 +5,7 @@ var protoLoader = require("@grpc/proto-loader");
 const { AppClient } = require("./proto/todos_grpc_pb");
 
 const client = new AppClient(
-  "localhost:9090",
+  "13.58.43.162:80",
   grpc.credentials.createInsecure()
 );
 
